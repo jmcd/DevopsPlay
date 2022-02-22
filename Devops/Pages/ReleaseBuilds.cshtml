@@ -1,0 +1,41 @@
+@page
+@model ReleaseBuilds
+@{
+    ViewData["Title"] = "Release Builds";
+}
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="PersonalAccessToken" class="form-label"></label>
+        <input asp-for="PersonalAccessToken" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CollectionUri" class="form-label">Collection URI</label>
+        <input asp-for="CollectionUri" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ProjectName" class="form-label">Project Name</label>
+        <input asp-for="ProjectName" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="RepoName" class="form-label">Repo Name</label>
+        <input asp-for="RepoName" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@if (Model.RepoReleaseVersionsInfo is not null)
+{
+    const int take = 5;
+    <div>
+        Last @take release branches:
+        <ul>
+            @foreach (var version in Model.RepoReleaseVersionsInfo.OrderedVersions.TakeLast(take))
+            {
+                <li>@version.ToString()</li>
+            }
+        </ul>
+        <span>Next build guess: @Model.RepoReleaseVersionsInfo.NextVersion.ToString(), you should verify this though.</span>
+    </div>
+}
